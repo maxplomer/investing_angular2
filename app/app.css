@@ -1,0 +1,57 @@
+#main-title {
+  color: rgb(0, 105, 226);
+  font-size: 30px;
+  margin-bottom: 36px;
+  white-space: nowrap;
+}
+
+#trade-button {
+  background-color: rgb(14, 114, 218);
+  border: 1px solid rgb(9, 60, 117);
+  color: white;
+  float: right;
+  font-size: 12px;
+  outline: 0;
+  padding: 11px 18px;
+}
+
+#trade-button:hover {
+  background-color: rgb(24, 124, 228);
+}
+
+#trade-button:active {
+  background-color: rgb(17, 103, 200);
+}
+
+#stock-form-checkbox {
+  cursor: pointer;
+  outline: 0;
+}
+
+#stock-form-checkbox-container {
+  display: inline-block;
+  position: relative;
+  top: 8px;
+}
+
+#stock-form-checkbox-text {
+  position: relative;
+  top: 1px;
+  left: 2px;
+}
+
+#stock-form-last-line-container {
+  margin-top: -5px;
+  width: 350px;
+}
+
+.stock-form-input {
+  border: 1px solid rgb(175,183,189);
+  border-radius: 3px;
+  font-size: 15px;
+  font-weight: lighter;
+  margin-bottom: 25px;
+  outline: 0;
+  padding: 7px 9px;
+  width: 350px;
+}

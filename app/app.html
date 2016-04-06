@@ -1,0 +1,19 @@
+<div>
+  <h1 id="main-title">Angular 2 Stock Trading</h1>
+  <h3>Recent trades</h3>
+  <ul>
+    <li *ngFor="#trade of trades">
+      company: {{trade.company}}, shares: {{trade.shares}}, id: {{trade.id}}
+    </li>
+  </ul>
+  <h3>Create a trade</h3>
+  <input class="stock-form-input" placeholder="Stock Symbol"/><br>
+  <input class="stock-form-input" placeholder="Number of Shares"/><br>
+  <div id="stock-form-last-line-container">
+    <div id="stock-form-checkbox-container">
+      <input id="stock-form-checkbox" type="checkbox"/>
+      <span id="stock-form-checkbox-text">Confirmed</span>
+    </div>
+    <button id="trade-button">Create a trade</button>
+  </div>
+</div>
