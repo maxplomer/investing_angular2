@@ -16,5 +16,18 @@ export class AppComponent {
     {"company": "W", "shares": "3", "id":"d008ab1d91e84e40f58daef0"}
   ];
 
+  ngOnInit() {
+    this.getTrades();
+  }
+
+  getTrades() {
+    this.http.get('http://localhost:3001/api/trades')
+      .map((res:Response) => res.json())
+      .subscribe(
+        data => { this.trades = data},
+        err => console.error(err),
+        () => console.log('done')
+      );
+  }
 
 }
