@@ -9,6 +9,8 @@ import {Observable} from 'rxjs/Rx';
 })
 export class AppComponent {
 
+  constructor(private http:Http) { }
+
   trades = [
     {"company": "M", "shares": 45, "id":"09b9f5fbd4ea1555a5b5e6a3"},
     {"company": "T", "shares": 55, "id":"b5c8086b4f8eb4c491c055a4"},
