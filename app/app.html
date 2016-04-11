@@ -7,13 +7,15 @@
     </li>
   </ul>
   <h3>Create a trade</h3>
-  <input [(ngModel)]="newTrade.symbol" class="stock-form-input" placeholder="Stock Symbol"/><br>
-  <input [(ngModel)]="newTrade.number" class="stock-form-input" placeholder="Number of Shares"/><br>
-  <div id="stock-form-last-line-container">
-    <div id="stock-form-checkbox-container">
-      <input id="stock-form-checkbox" type="checkbox"/>
-      <span id="stock-form-checkbox-text">Confirmed</span>
+  <form (ngSubmit)="createTrade()">
+    <input [(ngModel)]="newTrade.symbol" class="stock-form-input" placeholder="Stock Symbol" required/><br>
+    <input [(ngModel)]="newTrade.number" class="stock-form-input" placeholder="Number of Shares" type="number" required/><br>
+    <div id="stock-form-last-line-container">
+      <div id="stock-form-checkbox-container">
+        <input id="stock-form-checkbox" type="checkbox" required/>
+        <span id="stock-form-checkbox-text">Confirmed</span>
+      </div>
+      <button id="trade-button" type="submit">Create a trade</button>
     </div>
-    <button id="trade-button" (click)="createTrade()">Create a trade</button>
-  </div>
+  </form>
 </div>

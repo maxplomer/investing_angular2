@@ -30,7 +30,6 @@ export class AppComponent {
   }
 
   createTrade() {
-    console.log('HELLOWORLD');
     this.newTrade = {symbol: '', number: ''};
   }
 
