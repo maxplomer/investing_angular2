@@ -30,8 +30,19 @@ export class AppComponent {
   }
 
   createTrade() {
+    // Need to make post request to api
+    this.http.post('http://localhost:3001/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+      .map((res:Response) => res.json())
+      .subscribe(
+        data => { console.log(data) },
+        err => console.error(err),
+        () => console.log('done')
+      );
+
+    // Reset form
     this.newTrade = {symbol: '', number: '', checkboxState: false};
-    //need to make post request to api
+    
+    this.getTrades();
   }
 
 }
