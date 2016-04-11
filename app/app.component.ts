@@ -20,7 +20,7 @@ export class AppComponent {
   }
 
   getTrades() {
-    this.http.get('http://localhost:3001/api/trades')
+    this.http.get('http://54.208.182.103/api/trades')
       .map((res:Response) => res.json())
       .subscribe(
         data => { this.trades = data},
@@ -31,7 +31,7 @@ export class AppComponent {
 
   createTrade() {
     // Need to make post request to api
-    this.http.post('http://localhost:3001/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+    this.http.post('http://54.208.182.103/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
       .map((res:Response) => res.json())
       .subscribe(
         data => { console.log(data) },
