@@ -13,6 +13,8 @@ export class AppComponent {
 
   trades = [];
 
+  newTrade = {symbol: '', number: ''};
+
   ngOnInit() {
     this.getTrades();
   }
@@ -25,6 +27,11 @@ export class AppComponent {
         err => console.error(err),
         () => console.log('done')
       );
+  }
+
+  createTrade() {
+    console.log('HELLOWORLD');
+    this.newTrade = {symbol: '', number: ''};
   }
 
 }
