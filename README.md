@@ -1,3 +1,3 @@
 # Angular 2 Investing App
 
-This is a quick demo of angular 2 deployed on github pages, using a ruby backend API.
+This is a quick demo of Angular 2 deployed on GitHub Pages, using a Ruby backend API.
