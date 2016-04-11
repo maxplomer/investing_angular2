@@ -13,7 +13,7 @@ export class AppComponent {
 
   trades = [];
 
-  newTrade = {symbol: '', number: ''};
+  newTrade = {symbol: '', number: '', checkboxState: false};
 
   ngOnInit() {
     this.getTrades();
@@ -30,7 +30,7 @@ export class AppComponent {
   }
 
   createTrade() {
-    this.newTrade = {symbol: '', number: ''};
+    this.newTrade = {symbol: '', number: '', checkboxState: false};
   }
 
 }

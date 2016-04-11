@@ -12,7 +12,7 @@
     <input [(ngModel)]="newTrade.number" class="stock-form-input" placeholder="Number of Shares" type="number" required/><br>
     <div id="stock-form-last-line-container">
       <div id="stock-form-checkbox-container">
-        <input id="stock-form-checkbox" type="checkbox" required/>
+        <input id="stock-form-checkbox" type="checkbox" [(ngModel)]="newTrade.checkboxState" required/>
         <span id="stock-form-checkbox-text">Confirmed</span>
       </div>
       <button id="trade-button" type="submit">Create a trade</button>
