@@ -31,6 +31,7 @@ export class AppComponent {
 
   createTrade() {
     this.newTrade = {symbol: '', number: '', checkboxState: false};
+    //need to make post request to api
   }
 
 }
