@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', './myglobal.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1;
+    var core_1, http_1, myglobal_service_1;
     var AppComponent;
     return {
         setters:[
@@ -19,11 +19,16 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
             },
             function (http_1_1) {
                 http_1 = http_1_1;
+            },
+            function (myglobal_service_1_1) {
+                myglobal_service_1 = myglobal_service_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(http) {
+                function AppComponent(http, myGlobalService) {
                     this.http = http;
+                    this.myGlobalService = myGlobalService;
+                    this.apiDomain = this.myGlobalService.getApiDomain();
                     this.trades = [];
                     this.newTrade = { symbol: '', number: '', checkboxState: false };
                 }
@@ -32,13 +37,13 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
                 };
                 AppComponent.prototype.getTrades = function () {
                     var _this = this;
-                    this.http.get('http://54.208.182.103/api/trades')
+                    this.http.get(this.apiDomain + '/api/trades')
                         .map(function (res) { return res.json(); })
                         .subscribe(function (data) { _this.trades = data; }, function (err) { return console.error(err); }, function () { return console.log('done'); });
                 };
                 AppComponent.prototype.createTrade = function () {
                     // Need to make post request to api
-                    this.http.post('http://54.208.182.103/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+                    this.http.post(this.apiDomain + '/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
                         .map(function (res) { return res.json(); })
                         .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return console.log('done'); });
                     // Reset form
@@ -49,9 +54,10 @@ System.register(['angular2/core', 'angular2/http'], function(exports_1, context_
                     core_1.Component({
                         selector: 'my-app',
                         templateUrl: 'app/app.html',
-                        styleUrls: ['app/app.css']
+                        styleUrls: ['app/app.css'],
+                        providers: [myglobal_service_1.MyGlobalService]
                     }), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    __metadata('design:paramtypes', [http_1.Http, myglobal_service_1.MyGlobalService])
                 ], AppComponent);
                 return AppComponent;
             }());
