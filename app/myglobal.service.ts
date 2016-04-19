@@ -2,6 +2,6 @@ import {Injectable} from 'angular2/core';
 
 @Injectable()
 export class MyGlobalService {
-  getApiDomain = () => "http://54.186.237.58";
+  getApiDomain = () => "http://54.186.85.251:24413";
 }
 

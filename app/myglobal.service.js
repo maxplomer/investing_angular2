@@ -20,7 +20,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             MyGlobalService = (function () {
                 function MyGlobalService() {
-                    this.getApiDomain = function () { return "http://54.186.237.58"; };
+                    this.getApiDomain = function () { return "http://54.186.85.251:24413"; };
                 }
                 MyGlobalService = __decorate([
                     core_1.Injectable(), 
