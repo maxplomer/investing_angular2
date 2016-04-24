@@ -3,11 +3,11 @@
 
   <h3>Login</h3>
   <form>
-    <input [(ngModel)]="newUser.email" class="stock-form-input" placeholder="Username" required/><br>
+    <input [(ngModel)]="newUser.email" class="stock-form-input" placeholder="Email" required/><br>
     <input [(ngModel)]="newUser.password" class="stock-form-input" placeholder="Password" type="password" required/><br>
-    <button type="submit">Login</button>
+    <button (click)="login()" type="submit">Login</button>
     <span id="login-or-span">or</span>
-    <button type="submit">Create an account</button>
+    <button (click)="register()" type="submit">Create an account</button>
   </form>
 
   <h3>Recent trades</h3>

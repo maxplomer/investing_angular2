@@ -49,4 +49,14 @@ export class AppComponent {
     this.getTrades();
   }
 
+  //Auth
+
+  login() {
+    console.log("calling login()");
+  }
+
+  register() {
+    console.log("calling register()");
+  }
+
 }
