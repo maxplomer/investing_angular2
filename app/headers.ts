@@ -1,5 +1,5 @@
 import { Headers } from 'angular2/http';
 
 export const ContentHeaders = new Headers();
-contentHeaders.append('Accept', 'application/json');
-contentHeaders.append('Content-Type', 'application/json');
+ContentHeaders.append('Accept', 'application/json');
+ContentHeaders.append('Content-Type', 'application/json');
