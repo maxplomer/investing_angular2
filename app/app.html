@@ -1,11 +1,22 @@
 <div>
   <h1 id="main-title">Angular 2 Stock Trading</h1>
+
+  <h3>Login</h3>
+  <form>
+    <input [(ngModel)]="newUser.email" class="stock-form-input" placeholder="Username" required/><br>
+    <input [(ngModel)]="newUser.password" class="stock-form-input" placeholder="Password" type="password" required/><br>
+    <button type="submit">Login</button>
+    <span id="login-or-span">or</span>
+    <button type="submit">Create an account</button>
+  </form>
+
   <h3>Recent trades</h3>
   <ul>
     <li *ngFor="#trade of trades">
       company: {{trade.company}}, shares: {{trade.shares}}, id: {{trade.id}}
     </li>
   </ul>
+
   <h3>Create a trade</h3>
   <form (ngSubmit)="createTrade()">
     <input [(ngModel)]="newTrade.symbol" class="stock-form-input" placeholder="Stock Symbol" required/><br>

@@ -17,6 +17,7 @@ export class AppComponent {
   trades = [];
 
   newTrade = {symbol: '', number: '', checkboxState: false};
+  newUser = {email: '', password: ''};
 
   ngOnInit() {
     this.getTrades();

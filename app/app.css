@@ -1,26 +1,36 @@
+button {
+  background-color: rgb(14, 114, 218);
+  border: 1px solid rgb(9, 60, 117);
+  color: white;
+  font-size: 12px;
+  outline: 0;
+  padding: 11px 18px; 
+}
+
+button:hover {
+  background-color: rgb(24, 124, 228);
+}
+
+button:active {
+  background-color: rgb(17, 103, 200);
+}
+
+h3 {
+  margin-top: 36px;
+}
+
+#login-or-span {
+  margin: 0 20px;
+}
+
 #main-title {
   color: rgb(0, 105, 226);
   font-size: 30px;
-  margin-bottom: 36px;
   white-space: nowrap;
 }
 
 #trade-button {
-  background-color: rgb(14, 114, 218);
-  border: 1px solid rgb(9, 60, 117);
-  color: white;
   float: right;
-  font-size: 12px;
-  outline: 0;
-  padding: 11px 18px;
-}
-
-#trade-button:hover {
-  background-color: rgb(24, 124, 228);
-}
-
-#trade-button:active {
-  background-color: rgb(17, 103, 200);
 }
 
 #stock-form-checkbox {
@@ -46,6 +56,14 @@
   width: 350px;
 }
 
+.disable-selection {
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer */
+   -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}
+
 .stock-form-input {
   border: 1px solid rgb(175,183,189);
   border-radius: 3px;
@@ -55,12 +73,4 @@
   outline: 0;
   padding: 7px 9px;
   width: 350px;
-}
-
-.disable-selection {
-     -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer */
-   -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
-  -webkit-user-select: none; /* Chrome, Safari, and Opera */
-  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
