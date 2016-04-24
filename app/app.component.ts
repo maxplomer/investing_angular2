@@ -73,7 +73,7 @@ export class AppComponent {
 
   register(email, password) {
     let body = JSON.stringify({ email, password });
-    this.http.post(this.apiDomain + '/users', body, { headers: ContentHeaders })
+    this.http.post(this.apiDomain + '/api/users', body, { headers: ContentHeaders })
       .subscribe(
         response => {
           //localStorage.setItem('jwt', response.json().id_token);
