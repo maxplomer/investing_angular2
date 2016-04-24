@@ -17,7 +17,7 @@ export class AppComponent {
   trades = [];
 
   newTrade = {symbol: '', number: '', checkboxState: false};
-  newUser = {email: '', password: ''};
+  newUser = {email: '', password: '', formAction: ''};
 
   ngOnInit() {
     this.getTrades();
@@ -50,6 +50,22 @@ export class AppComponent {
   }
 
   //Auth
+
+  submitAuthForm () {
+    switch(this.newUser.formAction) {
+      case 'login':
+        this.login()
+        break;
+      case 'register':
+        this.register()
+        break;
+      default:
+        console.log("submitAuthForm called without formAction")
+    }
+
+    // Reset form
+    this.newUser = {email: '', password: '', formAction: ''};
+  }
 
   login() {
     console.log("calling login()");
