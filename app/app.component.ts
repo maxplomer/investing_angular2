@@ -49,8 +49,7 @@ export class AppComponent {
     this.getTrades();
   }
 
-  //Auth
-
+  // Auth
   submitAuthForm () {
     switch(this.newUser.formAction) {
       case 'login':
