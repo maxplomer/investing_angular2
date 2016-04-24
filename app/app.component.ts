@@ -2,7 +2,6 @@ import {Component} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Rx';
 import {MyGlobalService} from './myglobal.service';
-import {ContentHeaders} from './headers';
 
 @Component({
     selector: 'my-app',
@@ -73,7 +72,7 @@ export class AppComponent {
 
   register(email, password) {
     let body = JSON.stringify({ email, password });
-    this.http.post(this.apiDomain + '/api/users', body, { headers: ContentHeaders })
+    this.http.post(this.apiDomain + '/api/users', body)
       .subscribe(
         response => {
           //localStorage.setItem('jwt', response.json().id_token);
