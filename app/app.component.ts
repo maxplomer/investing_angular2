@@ -75,8 +75,8 @@ export class AppComponent {
     this.http.post(this.apiDomain + '/api/users', body)
       .subscribe(
         response => {
-          //localStorage.setItem('jwt', response.json().id_token);
-          // Fade out Login menu and show user stats
+          localStorage.setItem('jwt', response.json().id_token);
+          // Fade out Login menu and call API with AuthHTTP to get show user's trades and info
         },
         error => {
           console.log(error.text());
