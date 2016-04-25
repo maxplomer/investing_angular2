@@ -2,6 +2,7 @@ import {Component} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Rx';
 import {MyGlobalService} from './myglobal.service';
+import {AuthHttp} from 'angular2-jwt';
 
 @Component({
     selector: 'my-app',
