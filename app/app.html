@@ -1,16 +1,6 @@
 <div>
   <h1 id="main-title">Angular 2 Stock Trading</h1>
 
-  <h3>Login</h3>
-  <form (ngSubmit)="submitAuthForm()">
-    <input [(ngModel)]="newUser.email" class="stock-form-input" placeholder="Email" required/><br>
-    <input [(ngModel)]="newUser.password" class="stock-form-input" placeholder="Password" type="password" required/><br>
-    <button (click)="newUser.formAction = 'login'" type="submit">Login</button>
-    <span id="login-or-span">or</span>
-    <button (click)="newUser.formAction = 'register'" type="submit">Create an account</button>
-  </form>
-
-  <h3>Auth0 Login</h3>
   <button *ngIf="!loggedIn()" (click)="login()">Login</button>
   <button *ngIf="loggedIn()" (click)="logout()">Logout</button>
 
