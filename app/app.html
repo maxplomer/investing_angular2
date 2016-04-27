@@ -4,6 +4,10 @@
   <button *ngIf="!loggedIn()" (click)="login()">Login</button>
   <button *ngIf="loggedIn()" (click)="logout()">Logout</button>
 
+
+  <h3 *ngIf="loggedIn()">My trades</h3>
+
+
   <h3>Recent trades</h3>
   <ul>
     <li *ngFor="#trade of trades">
