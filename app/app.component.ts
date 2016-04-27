@@ -1,7 +1,16 @@
-import {Component} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
+
+import {Response} from 'angular2/http';
 import {Observable} from 'rxjs/Rx';
 import {MyGlobalService} from './myglobal.service';
+
+
+import {bootstrap} from 'angular2/platform/browser';
+import {Component, View, provide} from 'angular2/core';
+import {RouteConfig, Router, APP_BASE_HREF, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, CanActivate} from 'angular2/router';
+import {HTTP_PROVIDERS, Http} from 'angular2/http';
+import {AuthHttp, tokenNotExpired} from 'angular2-jwt';
+
+
 
 @Component({
     selector: 'my-app',
@@ -10,6 +19,9 @@ import {MyGlobalService} from './myglobal.service';
     providers: [MyGlobalService]
 })
 export class AppComponent {
+
+  lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
+
   constructor(private http:Http, private myGlobalService:MyGlobalService) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
@@ -66,10 +78,6 @@ export class AppComponent {
     this.newUser = {email: '', password: '', formAction: ''};
   }
 
-  login() {
-    console.log("calling login()");
-  }
-
   register(email, password) {
     let body = JSON.stringify({ email, password });
     this.http.post(this.apiDomain + '/api/users', body)
@@ -82,6 +90,35 @@ export class AppComponent {
           console.log(error.text());
         }
       );
+  }
+
+  // Auth
+
+  login() {
+    this.lock.show();
+    var hash = this.lock.parseHash();
+    if (hash) {
+      if (hash.error)
+        console.log('There was an error logging in', hash.error);
+      else
+        this.lock.getProfile(hash.id_token, function(err, profile) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          localStorage.setItem('profile', JSON.stringify(profile));
+          localStorage.setItem('id_token', hash.id_token);
+        });
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('profile');
+    localStorage.removeItem('id_token');
+  }
+
+  loggedIn() {
+    return tokenNotExpired();
   }
 
 }
