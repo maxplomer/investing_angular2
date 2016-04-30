@@ -65,7 +65,7 @@ export class AppComponent {
     this.getTrades();
   }
 
-  // Auth
+  // Old Auth
   submitAuthForm () {
     switch(this.newUser.formAction) {
       case 'login':
@@ -103,38 +103,31 @@ export class AppComponent {
   }
 
   login() {
-    var that = this;
     var hash = this.lock.parseHash();
+
     if (hash) {
       if (hash.error)
         console.log('There was an error logging in', hash.error);
       else
-        this.lock.getProfile(hash.id_token, function(err, profile) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          localStorage.setItem('profile', JSON.stringify(profile));
-          localStorage.setItem('id_token', hash.id_token);
-
-          that.currentUser = {id: profile["user_id"], email: profile["email"]};
-        });
+        this.getProfile(hash.id_token);
     } else {
-      var idToken = localStorage.getItem('id_token')
-
-      if (idToken) {
-        this.lock.getProfile(idToken, function(err, profile) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          localStorage.setItem('profile', JSON.stringify(profile));
-
-          that.currentUser = {id: profile["user_id"], email: profile["email"]};
-        });
-      }
-
+      var idToken = localStorage.getItem('id_token');
+      if (idToken) this.getProfile(idToken);
     }
+  }
+
+  getProfile(idToken) {
+    var that = this;
+    this.lock.getProfile(idToken, function(err, profile) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      localStorage.setItem('profile', JSON.stringify(profile));
+      localStorage.setItem('id_token', idToken);
+
+      that.currentUser = {id: profile["user_id"], email: profile["email"]};
+    });
   }
 
   logout() {
