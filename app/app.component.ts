@@ -34,6 +34,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.getTrades();
+    this.login();
   }
 
   getTrades() {
@@ -95,8 +96,11 @@ export class AppComponent {
 
   // Auth
 
-  login() {
+  showLoginModal() {
     this.lock.show();
+  }
+
+  login() {
     var hash = this.lock.parseHash();
     if (hash) {
       if (hash.error)
