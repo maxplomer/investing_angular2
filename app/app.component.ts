@@ -120,7 +120,20 @@ export class AppComponent {
           that.currentUser = {id: profile["user_id"], email: profile["email"]};
         });
     } else {
-      this.logout();
+      var idToken = localStorage.getItem('id_token')
+
+      if (idToken) {
+        this.lock.getProfile(idToken, function(err, profile) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          localStorage.setItem('profile', JSON.stringify(profile));
+
+          that.currentUser = {id: profile["user_id"], email: profile["email"]};
+        });
+      }
+
     }
   }
 
