@@ -119,6 +119,8 @@ export class AppComponent {
 
           that.currentUser = {id: profile["user_id"], email: profile["email"]};
         });
+    } else {
+      this.logout();
     }
   }
 
