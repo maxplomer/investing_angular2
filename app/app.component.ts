@@ -28,9 +28,11 @@ export class AppComponent {
   apiDomain = this.myGlobalService.getApiDomain();
 
   trades = [];
+  myTrades = [];
 
   newTrade = {symbol: '', number: '', checkboxState: false};
   newUser = {email: '', password: '', formAction: ''};
+  currentUser = {id: '', email: ''};
 
   ngOnInit() {
     this.getTrades();
@@ -101,6 +103,7 @@ export class AppComponent {
   }
 
   login() {
+    var that = this;
     var hash = this.lock.parseHash();
     if (hash) {
       if (hash.error)
@@ -113,6 +116,8 @@ export class AppComponent {
           }
           localStorage.setItem('profile', JSON.stringify(profile));
           localStorage.setItem('id_token', hash.id_token);
+
+          that.currentUser = {id: profile["user_id"], email: profile["email"]};
         });
     }
   }

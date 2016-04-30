@@ -1,12 +1,21 @@
 <div>
   <h1 id="main-title">Angular 2 Stock Trading</h1>
 
+  <div *ngIf="loggedIn()">
+    user id: {{currentUser.id}}<br>
+    user email: {{currentUser.email}}<br><br>
+  </div>
+
   <button *ngIf="!loggedIn()" (click)="showLoginModal()">Login</button>
   <button *ngIf="loggedIn()" (click)="logout()">Logout</button>
 
 
   <h3 *ngIf="loggedIn()">My trades</h3>
-
+  <ul *ngIf="loggedIn()">
+    <li *ngFor="#trade of myTrades">
+      company: {{trade.company}}, shares: {{trade.shares}}, id: {{trade.id}}
+    </li>
+  </ul>
 
   <h3>Recent trades</h3>
   <ul>
