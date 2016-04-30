@@ -23,10 +23,9 @@ export class AppComponent {
   lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private http:Http, private myGlobalService:MyGlobalService) { }
+  constructor(private http:Http, private authHttp:AuthHttp, private myGlobalService:MyGlobalService) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
-
   trades = [];
   myTrades = [];
 
@@ -52,11 +51,9 @@ export class AppComponent {
   createTrade() {
     var company = this.newTrade.symbol;
     var shares = this.newTrade.number;
-    var user_id = this.currentUser.id;
-    let body = JSON.stringify({company, shares, user_id});
+    let body = JSON.stringify({company, shares});
 
-    // Need to make post request to api
-    this.http.post(this.apiDomain + '/api/trades', body)
+    this.authHttp.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
       .subscribe(
         data => { console.log(data) },
