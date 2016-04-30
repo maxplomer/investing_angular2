@@ -50,8 +50,13 @@ export class AppComponent {
   }
 
   createTrade() {
+    var company = this.newTrade.symbol;
+    var shares = this.newTrade.number;
+    var user_id = this.currentUser.id;
+    let body = JSON.stringify({company, shares, user_id});
+
     // Need to make post request to api
-    this.http.post(this.apiDomain + '/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+    this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
       .subscribe(
         data => { console.log(data) },
@@ -133,6 +138,8 @@ export class AppComponent {
   logout() {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
+
+    this.currentUser = {id: '', email: ''};
   }
 
   loggedIn() {
