@@ -49,7 +49,8 @@ export class AppComponent {
     var company = this.newTrade.symbol;
     var shares = this.newTrade.number;
     var idToken = this.currentUser.idToken;
-    let body = JSON.stringify({company, shares, idToken});
+    var id = this.currentUser.id;
+    let body = JSON.stringify({company, shares, idToken, id});
 
     this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
