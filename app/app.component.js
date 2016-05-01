@@ -32,14 +32,16 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     this.http = http;
                     this.myGlobalService = myGlobalService;
                     this.lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
-                    this.jwtHelper = new angular2_jwt_1.JwtHelper();
                     this.apiDomain = this.myGlobalService.getApiDomain();
                     this.trades = [];
+                    this.myTrades = [];
                     this.newTrade = { symbol: '', number: '', checkboxState: false };
                     this.newUser = { email: '', password: '', formAction: '' };
+                    this.currentUser = { id: '', email: '', idToken: '' };
                 }
                 AppComponent.prototype.ngOnInit = function () {
                     this.getTrades();
+                    this.login();
                 };
                 AppComponent.prototype.getTrades = function () {
                     var _this = this;
@@ -48,15 +50,19 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                         .subscribe(function (data) { _this.trades = data; }, function (err) { return console.error(err); }, function () { return console.log('done'); });
                 };
                 AppComponent.prototype.createTrade = function () {
-                    // Need to make post request to api
-                    this.http.post(this.apiDomain + '/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+                    var _this = this;
+                    var company = this.newTrade.symbol;
+                    var shares = this.newTrade.number;
+                    var idToken = this.currentUser.idToken;
+                    var id = this.currentUser.id;
+                    var body = JSON.stringify({ company: company, shares: shares, idToken: idToken, id: id });
+                    this.http.post(this.apiDomain + '/api/trades', body)
                         .map(function (res) { return res.json(); })
-                        .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return console.log('done'); });
+                        .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return _this.getTrades(); });
                     // Reset form
                     this.newTrade = { symbol: '', number: '', checkboxState: false };
-                    this.getTrades();
                 };
-                // Auth
+                // Old Auth
                 AppComponent.prototype.submitAuthForm = function () {
                     switch (this.newUser.formAction) {
                         case 'login':
@@ -82,26 +88,43 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     });
                 };
                 // Auth
-                AppComponent.prototype.login = function () {
+                AppComponent.prototype.showLoginModal = function () {
                     this.lock.show();
+                };
+                AppComponent.prototype.login = function () {
                     var hash = this.lock.parseHash();
                     if (hash) {
                         if (hash.error)
                             console.log('There was an error logging in', hash.error);
                         else
-                            this.lock.getProfile(hash.id_token, function (err, profile) {
-                                if (err) {
-                                    console.log(err);
-                                    return;
-                                }
-                                localStorage.setItem('profile', JSON.stringify(profile));
-                                localStorage.setItem('id_token', hash.id_token);
-                            });
+                            this.getProfile(hash.id_token);
                     }
+                    else {
+                        var idToken = localStorage.getItem('id_token');
+                        if (idToken)
+                            this.getProfile(idToken);
+                    }
+                };
+                AppComponent.prototype.getProfile = function (idToken) {
+                    var that = this;
+                    this.lock.getProfile(idToken, function (err, profile) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        localStorage.setItem('profile', JSON.stringify(profile));
+                        localStorage.setItem('id_token', idToken);
+                        that.currentUser = {
+                            id: profile["user_id"],
+                            email: profile["email"],
+                            idToken: idToken
+                        };
+                    });
                 };
                 AppComponent.prototype.logout = function () {
                     localStorage.removeItem('profile');
                     localStorage.removeItem('id_token');
+                    this.currentUser = { id: '', email: '', idToken: '' };
                 };
                 AppComponent.prototype.loggedIn = function () {
                     return angular2_jwt_1.tokenNotExpired();
