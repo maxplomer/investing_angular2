@@ -28,7 +28,7 @@ export class AppComponent {
 
   newTrade = {symbol: '', number: '', checkboxState: false};
   newUser = {email: '', password: '', formAction: ''};
-  currentUser = {id: '', email: ''};
+  currentUser = {id: '', email: '', idToken: ''};
 
   ngOnInit() {
     this.getTrades();
@@ -48,7 +48,8 @@ export class AppComponent {
   createTrade() {
     var company = this.newTrade.symbol;
     var shares = this.newTrade.number;
-    let body = JSON.stringify({company, shares});
+    var idToken = this.currentUser.idToken;
+    let body = JSON.stringify({company, shares, idToken});
 
     this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
@@ -125,7 +126,11 @@ export class AppComponent {
       localStorage.setItem('profile', JSON.stringify(profile));
       localStorage.setItem('id_token', idToken);
 
-      that.currentUser = {id: profile["user_id"], email: profile["email"]};
+      that.currentUser = {
+        id: profile["user_id"], 
+        email: profile["email"], 
+        idToken: idToken
+      };
     });
   }
 
@@ -133,7 +138,7 @@ export class AppComponent {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
 
-    this.currentUser = {id: '', email: ''};
+    this.currentUser = {id: '', email: '', idToken: ''};
   }
 
   loggedIn() {
