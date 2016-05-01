@@ -20,7 +20,10 @@
   <h3>Recent trades</h3>
   <ul>
     <li *ngFor="#trade of trades">
-      company: {{trade.company}}, shares: {{trade.shares}}, id: {{trade.id}}
+      company: {{trade.company}}, 
+      shares: {{trade.shares}}, 
+      id: {{trade.id}}, 
+      user_id: {{trade.user_id}}
     </li>
   </ul>
 
