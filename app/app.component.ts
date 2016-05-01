@@ -57,13 +57,11 @@ export class AppComponent {
       .subscribe(
         data => { console.log(data) },
         err => console.error(err),
-        () => console.log('done')
+        () => this.getTrades()
       );
 
     // Reset form
     this.newTrade = {symbol: '', number: '', checkboxState: false};
-    
-    this.getTrades();
   }
 
   // Old Auth
