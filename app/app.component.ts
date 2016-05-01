@@ -4,13 +4,11 @@ import {Observable} from 'rxjs/Rx';
 import {MyGlobalService} from './myglobal.service';
 
 import {bootstrap} from 'angular2/platform/browser';
-import {Component, View, provide} from 'angular2/core';
-import {RouteConfig, Router, APP_BASE_HREF, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, CanActivate} from 'angular2/router';
+import {Component} from 'angular2/core';
 import {HTTP_PROVIDERS, Http} from 'angular2/http';
-import {AuthHttp, AuthConfig, tokenNotExpired, JwtHelper} from 'angular2-jwt';
+import {tokenNotExpired} from 'angular2-jwt';
 
 declare var Auth0Lock;
-
 
 @Component({
     selector: 'my-app',
@@ -21,19 +19,20 @@ declare var Auth0Lock;
 export class AppComponent {
 
   lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
-  jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private http:Http, private myGlobalService:MyGlobalService) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
-
   trades = [];
+  myTrades = [];
 
   newTrade = {symbol: '', number: '', checkboxState: false};
   newUser = {email: '', password: '', formAction: ''};
+  currentUser = {id: '', email: '', idToken: ''};
 
   ngOnInit() {
     this.getTrades();
+    this.login();
   }
 
   getTrades() {
@@ -47,22 +46,25 @@ export class AppComponent {
   }
 
   createTrade() {
-    // Need to make post request to api
-    this.http.post(this.apiDomain + '/api/trades?company=' + this.newTrade.symbol + '&shares=' + this.newTrade.number + '')
+    var company = this.newTrade.symbol;
+    var shares = this.newTrade.number;
+    var idToken = this.currentUser.idToken;
+    var id = this.currentUser.id;
+    let body = JSON.stringify({company, shares, idToken, id});
+
+    this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
       .subscribe(
         data => { console.log(data) },
         err => console.error(err),
-        () => console.log('done')
+        () => this.getTrades()
       );
 
     // Reset form
     this.newTrade = {symbol: '', number: '', checkboxState: false};
-    
-    this.getTrades();
   }
 
-  // Auth
+  // Old Auth
   submitAuthForm () {
     switch(this.newUser.formAction) {
       case 'login':
@@ -95,27 +97,47 @@ export class AppComponent {
 
   // Auth
 
-  login() {
+  showLoginModal() {
     this.lock.show();
+  }
+
+  login() {
     var hash = this.lock.parseHash();
+
     if (hash) {
       if (hash.error)
         console.log('There was an error logging in', hash.error);
       else
-        this.lock.getProfile(hash.id_token, function(err, profile) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          localStorage.setItem('profile', JSON.stringify(profile));
-          localStorage.setItem('id_token', hash.id_token);
-        });
+        this.getProfile(hash.id_token);
+    } else {
+      var idToken = localStorage.getItem('id_token');
+      if (idToken) this.getProfile(idToken);
     }
+  }
+
+  getProfile(idToken) {
+    var that = this;
+    this.lock.getProfile(idToken, function(err, profile) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      localStorage.setItem('profile', JSON.stringify(profile));
+      localStorage.setItem('id_token', idToken);
+
+      that.currentUser = {
+        id: profile["user_id"], 
+        email: profile["email"], 
+        idToken: idToken
+      };
+    });
   }
 
   logout() {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
+
+    this.currentUser = {id: '', email: '', idToken: ''};
   }
 
   loggedIn() {
