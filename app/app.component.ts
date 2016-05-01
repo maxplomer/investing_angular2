@@ -4,13 +4,11 @@ import {Observable} from 'rxjs/Rx';
 import {MyGlobalService} from './myglobal.service';
 
 import {bootstrap} from 'angular2/platform/browser';
-import {Component, View, provide} from 'angular2/core';
-import {RouteConfig, Router, APP_BASE_HREF, ROUTER_PROVIDERS, ROUTER_DIRECTIVES, CanActivate} from 'angular2/router';
+import {Component} from 'angular2/core';
 import {HTTP_PROVIDERS, Http} from 'angular2/http';
-import {AuthHttp, AuthConfig, tokenNotExpired, JwtHelper} from 'angular2-jwt';
+import {tokenNotExpired} from 'angular2-jwt';
 
 declare var Auth0Lock;
-
 
 @Component({
     selector: 'my-app',
@@ -21,9 +19,8 @@ declare var Auth0Lock;
 export class AppComponent {
 
   lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
-  jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private http:Http, private authHttp:AuthHttp, private myGlobalService:MyGlobalService) { }
+  constructor(private http:Http, private myGlobalService:MyGlobalService) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
   trades = [];
@@ -53,7 +50,7 @@ export class AppComponent {
     var shares = this.newTrade.number;
     let body = JSON.stringify({company, shares});
 
-    this.authHttp.post(this.apiDomain + '/api/trades', body)
+    this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
       .subscribe(
         data => { console.log(data) },
