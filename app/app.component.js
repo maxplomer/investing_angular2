@@ -1,4 +1,4 @@
-System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angular2-jwt'], function(exports_1, context_1) {
+System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angular2-jwt', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var myglobal_service_1, core_1, http_1, angular2_jwt_1;
+    var myglobal_service_1, core_1, http_1, angular2_jwt_1, router_1;
     var AppComponent;
     return {
         setters:[
@@ -25,12 +25,16 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
             },
             function (angular2_jwt_1_1) {
                 angular2_jwt_1 = angular2_jwt_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(http, myGlobalService) {
+                function AppComponent(http, myGlobalService, location) {
                     this.http = http;
                     this.myGlobalService = myGlobalService;
+                    this.location = location;
                     this.lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
                     this.apiDomain = this.myGlobalService.getApiDomain();
                     this.trades = [];
@@ -43,11 +47,25 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     this.getTrades();
                     this.login();
                 };
+                AppComponent.prototype.updateTrades = function () {
+                    this.getTrades();
+                    if (this.loggedIn()) {
+                        this.getMyTrades();
+                    }
+                };
                 AppComponent.prototype.getTrades = function () {
                     var _this = this;
                     this.http.get(this.apiDomain + '/api/trades')
                         .map(function (res) { return res.json(); })
                         .subscribe(function (data) { _this.trades = data; }, function (err) { return console.error(err); }, function () { return console.log('done'); });
+                };
+                AppComponent.prototype.getMyTrades = function () {
+                    var _this = this;
+                    var idToken = this.currentUser.idToken;
+                    var id = this.currentUser.id;
+                    this.http.get(this.apiDomain + '/api/my_trades?id=' + id + '&idToken=' + idToken + '')
+                        .map(function (res) { return res.json(); })
+                        .subscribe(function (data) { _this.myTrades = data; }, function (err) { return console.error(err); }, function () { return console.log('done'); });
                 };
                 AppComponent.prototype.createTrade = function () {
                     var _this = this;
@@ -58,34 +76,9 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     var body = JSON.stringify({ company: company, shares: shares, idToken: idToken, id: id });
                     this.http.post(this.apiDomain + '/api/trades', body)
                         .map(function (res) { return res.json(); })
-                        .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return _this.getTrades(); });
+                        .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return _this.updateTrades(); });
                     // Reset form
                     this.newTrade = { symbol: '', number: '', checkboxState: false };
-                };
-                // Old Auth
-                AppComponent.prototype.submitAuthForm = function () {
-                    switch (this.newUser.formAction) {
-                        case 'login':
-                            this.login();
-                            break;
-                        case 'register':
-                            this.register(this.newUser.email, this.newUser.password);
-                            break;
-                        default:
-                            console.log("submitAuthForm called without formAction");
-                    }
-                    // Reset form
-                    this.newUser = { email: '', password: '', formAction: '' };
-                };
-                AppComponent.prototype.register = function (email, password) {
-                    var body = JSON.stringify({ email: email, password: password });
-                    this.http.post(this.apiDomain + '/api/users', body)
-                        .subscribe(function (response) {
-                        localStorage.setItem('jwt', response.json().id_token);
-                        // Fade out Login menu and call API with AuthHTTP to get show user's trades and info
-                    }, function (error) {
-                        console.log(error.text());
-                    });
                 };
                 // Auth
                 AppComponent.prototype.showLoginModal = function () {
@@ -119,12 +112,14 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                             email: profile["email"],
                             idToken: idToken
                         };
+                        that.getMyTrades();
                     });
                 };
                 AppComponent.prototype.logout = function () {
                     localStorage.removeItem('profile');
                     localStorage.removeItem('id_token');
                     this.currentUser = { id: '', email: '', idToken: '' };
+                    location.hash = '';
                 };
                 AppComponent.prototype.loggedIn = function () {
                     return angular2_jwt_1.tokenNotExpired();
@@ -134,9 +129,9 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                         selector: 'my-app',
                         templateUrl: 'app/app.html',
                         styleUrls: ['app/app.css'],
-                        providers: [myglobal_service_1.MyGlobalService]
+                        providers: [myglobal_service_1.MyGlobalService, router_1.ROUTER_PROVIDERS]
                     }), 
-                    __metadata('design:paramtypes', [http_1.Http, myglobal_service_1.MyGlobalService])
+                    __metadata('design:paramtypes', [http_1.Http, myglobal_service_1.MyGlobalService, router_1.Location])
                 ], AppComponent);
                 return AppComponent;
             }());
