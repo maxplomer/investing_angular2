@@ -78,9 +78,14 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     var body = JSON.stringify({ company: company, shares: shares, idToken: idToken, id: id });
                     this.http.post(this.apiDomain + '/api/trades', body)
                         .map(function (res) { return res.json(); })
-                        .subscribe(function (data) { console.log(data); }, function (err) { return console.error(err); }, function () { return _this.updateTrades(); });
+                        .subscribe(function (data) { _this.checkForError(data); }, function (err) { return console.error(err); }, function () { return _this.updateTrades(); });
                     // Reset form
                     this.newTrade = { symbol: '', number: '', checkboxState: false };
+                };
+                AppComponent.prototype.checkForError = function (data) {
+                    if (data['error']) {
+                        alert('Error: ' + data['error']);
+                    }
                 };
                 // Auth
                 AppComponent.prototype.showLoginModal = function () {
