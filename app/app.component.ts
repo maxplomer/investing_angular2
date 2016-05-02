@@ -82,13 +82,19 @@ export class AppComponent {
     this.http.post(this.apiDomain + '/api/trades', body)
       .map((res:Response) => res.json())
       .subscribe(
-        data => { console.log(data) },
+        data => { this.checkForError(data) },
         err => console.error(err),
         () => this.updateTrades()
       );
 
     // Reset form
     this.newTrade = {symbol: '', number: '', checkboxState: false};
+  }
+
+  checkForError(data) {
+    if (data['error']) {
+      alert('Error: ' + data['error']);
+    }
   }
 
   // Auth
