@@ -50,6 +50,19 @@ export class AppComponent {
       );
   }
 
+  getMyTrades() {
+    var idToken = this.currentUser.idToken;
+    var id = this.currentUser.id;
+
+    this.http.get(this.apiDomain + '/api/my_trades?id=' + id + '&idToken=' + idToken + '')
+      .map((res:Response) => res.json())
+      .subscribe(
+        data => { this.myTrades = data},
+        err => console.error(err),
+        () => console.log('done')
+      );
+  }
+
   createTrade() {
     var company = this.newTrade.symbol;
     var shares = this.newTrade.number;
@@ -104,6 +117,8 @@ export class AppComponent {
         email: profile["email"], 
         idToken: idToken
       };
+
+      that.getMyTrades();
     });
   }
 
