@@ -7,6 +7,7 @@ import {bootstrap} from 'angular2/platform/browser';
 import {Component} from 'angular2/core';
 import {HTTP_PROVIDERS, Http} from 'angular2/http';
 import {tokenNotExpired} from 'angular2-jwt';
+import {ROUTER_PROVIDERS, Location} from 'angular2/router';
 
 declare var Auth0Lock;
 
@@ -14,13 +15,17 @@ declare var Auth0Lock;
     selector: 'my-app',
     templateUrl: 'app/app.html',
     styleUrls: ['app/app.css'],
-    providers: [MyGlobalService]
+    providers: [MyGlobalService, ROUTER_PROVIDERS]
 })
-export class AppComponent {
 
+export class AppComponent {
   lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
 
-  constructor(private http:Http, private myGlobalService:MyGlobalService) { }
+  constructor(
+    private http:Http, 
+    private myGlobalService:MyGlobalService, 
+    private location:Location
+  ) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
   trades = [];
@@ -35,11 +40,31 @@ export class AppComponent {
     this.login();
   }
 
+  updateTrades() {
+    this.getTrades();
+    if (this.loggedIn()) {
+      this.getMyTrades();
+    }
+  }
+
   getTrades() {
     this.http.get(this.apiDomain + '/api/trades')
       .map((res:Response) => res.json())
       .subscribe(
         data => { this.trades = data},
+        err => console.error(err),
+        () => console.log('done')
+      );
+  }
+
+  getMyTrades() {
+    var idToken = this.currentUser.idToken;
+    var id = this.currentUser.id;
+
+    this.http.get(this.apiDomain + '/api/my_trades?id=' + id + '&idToken=' + idToken + '')
+      .map((res:Response) => res.json())
+      .subscribe(
+        data => { this.myTrades = data},
         err => console.error(err),
         () => console.log('done')
       );
@@ -57,42 +82,11 @@ export class AppComponent {
       .subscribe(
         data => { console.log(data) },
         err => console.error(err),
-        () => this.getTrades()
+        () => this.updateTrades()
       );
 
     // Reset form
     this.newTrade = {symbol: '', number: '', checkboxState: false};
-  }
-
-  // Old Auth
-  submitAuthForm () {
-    switch(this.newUser.formAction) {
-      case 'login':
-        this.login()
-        break;
-      case 'register':
-        this.register(this.newUser.email, this.newUser.password);
-        break;
-      default:
-        console.log("submitAuthForm called without formAction")
-    }
-
-    // Reset form
-    this.newUser = {email: '', password: '', formAction: ''};
-  }
-
-  register(email, password) {
-    let body = JSON.stringify({ email, password });
-    this.http.post(this.apiDomain + '/api/users', body)
-      .subscribe(
-        response => {
-          localStorage.setItem('jwt', response.json().id_token);
-          // Fade out Login menu and call API with AuthHTTP to get show user's trades and info
-        },
-        error => {
-          console.log(error.text());
-        }
-      );
   }
 
   // Auth
@@ -130,6 +124,8 @@ export class AppComponent {
         email: profile["email"], 
         idToken: idToken
       };
+
+      that.getMyTrades();
     });
   }
 
@@ -138,6 +134,7 @@ export class AppComponent {
     localStorage.removeItem('id_token');
 
     this.currentUser = {id: '', email: '', idToken: ''};
+    location.hash = '';
   }
 
   loggedIn() {
