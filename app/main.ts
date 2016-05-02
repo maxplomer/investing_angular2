@@ -7,5 +7,5 @@ import {APP_BASE_HREF} from 'angular2/router';
 
 bootstrap(AppComponent, [
   HTTP_PROVIDERS, 
-  provide(APP_BASE_HREF, {useValue : '/' });
+  provide(APP_BASE_HREF, {useValue : '/' })
 ]);

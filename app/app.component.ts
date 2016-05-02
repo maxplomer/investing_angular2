@@ -69,37 +69,6 @@ export class AppComponent {
     this.newTrade = {symbol: '', number: '', checkboxState: false};
   }
 
-  // Old Auth
-  submitAuthForm () {
-    switch(this.newUser.formAction) {
-      case 'login':
-        this.login()
-        break;
-      case 'register':
-        this.register(this.newUser.email, this.newUser.password);
-        break;
-      default:
-        console.log("submitAuthForm called without formAction")
-    }
-
-    // Reset form
-    this.newUser = {email: '', password: '', formAction: ''};
-  }
-
-  register(email, password) {
-    let body = JSON.stringify({ email, password });
-    this.http.post(this.apiDomain + '/api/users', body)
-      .subscribe(
-        response => {
-          localStorage.setItem('jwt', response.json().id_token);
-          // Fade out Login menu and call API with AuthHTTP to get show user's trades and info
-        },
-        error => {
-          console.log(error.text());
-        }
-      );
-  }
-
   // Auth
 
   showLoginModal() {
