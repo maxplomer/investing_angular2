@@ -7,6 +7,7 @@ import {bootstrap} from 'angular2/platform/browser';
 import {Component} from 'angular2/core';
 import {HTTP_PROVIDERS, Http} from 'angular2/http';
 import {tokenNotExpired} from 'angular2-jwt';
+import {ROUTER_PROVIDERS, Location} from 'angular2/router';
 
 declare var Auth0Lock;
 
@@ -14,13 +15,17 @@ declare var Auth0Lock;
     selector: 'my-app',
     templateUrl: 'app/app.html',
     styleUrls: ['app/app.css'],
-    providers: [MyGlobalService]
+    providers: [MyGlobalService, ROUTER_PROVIDERS]
 })
-export class AppComponent {
 
+export class AppComponent {
   lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
 
-  constructor(private http:Http, private myGlobalService:MyGlobalService) { }
+  constructor(
+    private http:Http, 
+    private myGlobalService:MyGlobalService, 
+    private location:Location
+  ) { }
 
   apiDomain = this.myGlobalService.getApiDomain();
   trades = [];
@@ -138,6 +143,7 @@ export class AppComponent {
     localStorage.removeItem('id_token');
 
     this.currentUser = {id: '', email: '', idToken: ''};
+    location.hash = '';
   }
 
   loggedIn() {
