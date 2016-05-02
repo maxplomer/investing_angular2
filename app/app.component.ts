@@ -40,6 +40,13 @@ export class AppComponent {
     this.login();
   }
 
+  updateTrades() {
+    this.getTrades();
+    if (this.loggedIn()) {
+      this.getMyTrades();
+    }
+  }
+
   getTrades() {
     this.http.get(this.apiDomain + '/api/trades')
       .map((res:Response) => res.json())
@@ -75,7 +82,7 @@ export class AppComponent {
       .subscribe(
         data => { console.log(data) },
         err => console.error(err),
-        () => this.getTrades()
+        () => this.updateTrades()
       );
 
     // Reset form
