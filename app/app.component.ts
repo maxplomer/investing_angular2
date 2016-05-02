@@ -19,7 +19,9 @@ declare var Auth0Lock;
 })
 
 export class AppComponent {
-  lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
+  auth0ClientId = this.myGlobalService.getAuth0ClientId();
+  auth0Domain = this.myGlobalService.getAuth0Domain();
+  lock = new Auth0Lock(this.auth0ClientId, this.auth0Domain);
 
   constructor(
     private http:Http, 
