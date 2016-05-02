@@ -35,7 +35,9 @@ System.register(['./myglobal.service', 'angular2/core', 'angular2/http', 'angula
                     this.http = http;
                     this.myGlobalService = myGlobalService;
                     this.location = location;
-                    this.lock = new Auth0Lock('66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM', 'maxplomer.auth0.com');
+                    this.auth0ClientId = this.myGlobalService.getAuth0ClientId();
+                    this.auth0Domain = this.myGlobalService.getAuth0Domain();
+                    this.lock = new Auth0Lock(this.auth0ClientId, this.auth0Domain);
                     this.apiDomain = this.myGlobalService.getApiDomain();
                     this.trades = [];
                     this.myTrades = [];

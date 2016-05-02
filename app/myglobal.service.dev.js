@@ -20,7 +20,9 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             MyGlobalService = (function () {
                 function MyGlobalService() {
-                    this.getApiDomain = function () { return "http://localhost:3001"; };
+                    this.getApiDomain = function () { return 'http://localhost:3001'; };
+                    this.getAuth0ClientId = function () { return '66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM'; };
+                    this.getAuth0Domain = function () { return 'maxplomer.auth0.com'; };
                 }
                 MyGlobalService = __decorate([
                     core_1.Injectable(), 
