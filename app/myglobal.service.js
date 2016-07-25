@@ -20,7 +20,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             MyGlobalService = (function () {
                 function MyGlobalService() {
-                    this.getApiDomain = function () { return 'http://54.187.163.195:24413'; };
+                    this.getApiDomain = function () { return 'http://54.82.251.230:53736'; };
                     this.getAuth0ClientId = function () { return '66lkhr6nngfcbIpsgXRbP0fSyDWFtzbM'; };
                     this.getAuth0Domain = function () { return 'maxplomer.auth0.com'; };
                 }
